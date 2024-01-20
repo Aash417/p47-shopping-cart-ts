@@ -6,14 +6,15 @@ type PropsType = {
 };
 
 const Nav = ({ viewCart, setViewCart }: PropsType) => {
+
 	const button = viewCart ? (
 		<button onClick={() => setViewCart(false)}>View products</button>
 	) : (
-		<button onClick={() => setViewCart(false)}>View Cart</button>
+		<button onClick={() => setViewCart(true)}>View Cart</button>
 	);
 
 	const content = <nav className='nav'>{button}</nav>;
-	return <div>Nav</div>;
+	return content;
 };
 
 export default Nav;
