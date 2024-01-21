@@ -1,0 +1,34 @@
+import React, { ReactElement } from 'react';
+import useCart from '../hooks/useCart';
+import useProducts from '../hooks/useProduct';
+import Product from './Product';
+
+const ProductList = () => {
+	const { dispatch, Reducer_Action, cart } = useCart();
+	const { products } = useProducts();
+
+	let pageContent: ReactElement | ReactElement[] = <p>Loading...</p>;
+
+	if (products?.length) {
+		pageContent = products.map((product) => {
+			const inCart: boolean = cart.some(
+				(item) => item.sku === product.sku
+			);
+
+			return (
+				<Product
+					key={product.sku}
+					product={product}
+					dispatch={dispatch}
+					Reducer_Action={Reducer_Action}
+					inCart={inCart}
+				></Product>
+			);
+		});
+	}
+	const content = <main className='main main--products'>{pageContent}</main>;
+
+	return content;
+};
+
+export default ProductList;
