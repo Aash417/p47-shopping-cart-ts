@@ -1,5 +1,6 @@
 import { ProductType } from '../context/ProductsProvider';
 import { ReducerActionType, ReducerAction } from '../context/CartProvider';
+import { memo } from 'react';
 
 type PropsType = {
 	product: ProductType;
@@ -21,7 +22,7 @@ const Products = ({ product, dispatch, inCart, Reducer_Action }: PropsType) => {
 			},
 		});
 
-	const itemIncart = inCart ? '-> Item in cart: ' : null;
+	const itemIncart = inCart ? '-> Item in cart: ✅' : null;
 	const content = (
 		<article>
 			<h3>{product.name}</h3>
@@ -40,4 +41,18 @@ const Products = ({ product, dispatch, inCart, Reducer_Action }: PropsType) => {
 	return content;
 };
 
-export default Products;
+function areProductEqual(
+	{ product: prevProduct, inCart: prevInCart }: PropsType,
+	{ product: nextProduct, inCart: nextInCart }: PropsType
+) {
+	return Object.keys(prevProduct).every((key) => {
+		return (
+			prevProduct[key as keyof ProductType] ===
+				nextProduct[key as keyof ProductType] &&
+			prevInCart === nextInCart
+		);
+	});
+}
+const MemoizedProduct = memo<typeof Products>(Products, areProductEqual);
+
+export default MemoizedProduct;
